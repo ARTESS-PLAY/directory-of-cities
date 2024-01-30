@@ -1,4 +1,3 @@
-import { Accordion } from 'react-accessible-accordion';
 import { useAddressesContext } from '../../entities/Address/model/context/AddressesContext';
 import CheckAddress from '../../features/CheckAddress/ui';
 import ChildAddress from '../../features/ChildAddress/ui';

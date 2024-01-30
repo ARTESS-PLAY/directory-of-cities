@@ -16,7 +16,9 @@ interface ChildAddressProps extends WithClassname {
 const ChildAddress = ({ address, className = '' }: ChildAddressProps) => {
     if (address?.type === 'user') {
         return (
-            <p className="address__user" data-tooltip="абобус">
+            <p
+                className="address__user"
+                data-tooltip={address?.meta?.tooltip ? address.meta.tooltip : ''}>
                 {address.name}
             </p>
         );
