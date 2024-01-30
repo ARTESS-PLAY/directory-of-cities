@@ -6,8 +6,6 @@ import './index.css';
 const CheckAddress = ({ className = '' }: WithClassname): JSX.Element => {
     const { selectedAddresses, onSelectAddress } = useAddressesContext();
 
-    console.log(selectedAddresses);
-
     return (
         <form className={`check-adress ${className}`}>
             {selectedAddresses.map((el) => (

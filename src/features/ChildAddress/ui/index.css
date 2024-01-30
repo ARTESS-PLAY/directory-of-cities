@@ -1,0 +1,11 @@
+.address__children {
+    padding-left: 3rem;
+}
+
+.address__user {
+    padding-left: 3.5rem;
+    font-size: 1.1rem;
+}
+.address__user:not(:last-child) {
+    margin-bottom: 1rem;
+}

@@ -1,0 +1,13 @@
+.addresses .accordion__button {
+    background-color: transparent;
+    border: none;
+}
+.addresses .accordion__button::before {
+    transition: transform 0.3s;
+    border-bottom: 2px solid var(--color-dark-brown);
+    border-right: 2px solid var(--color-dark-brown);
+}
+
+.addresses .accordion {
+    border: none;
+}

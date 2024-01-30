@@ -1,9 +1,11 @@
 import { createContext, useContext, useState } from 'react';
-import { ChosenTerm } from '../types';
+import { AddressDto, ChosenTerm } from '../types';
 
 interface AddressesContextInitial {
     selectedAddresses: ChosenTerm[];
     onSelectAddress: (value: string, checked: boolean) => void;
+    addresses: AddressDto[];
+    setAddresses: (v: AddressDto[]) => void;
 }
 
 //контекст для адресов
@@ -36,9 +38,191 @@ const dataPlaceholder = [
     },
 ];
 
+const placeholderAdressesDto: AddressDto[] = [
+    {
+        id: 1,
+        type: 'city',
+        name: 'Москва',
+        children: [
+            {
+                id: 1,
+                type: 'district',
+                name: 'Пресненский р-н',
+                children: [
+                    {
+                        id: 1,
+                        type: 'street',
+                        name: 'Гашека ул.',
+                        children: [
+                            {
+                                id: 1,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                            {
+                                id: 2,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                        ],
+                    },
+                    {
+                        id: 2,
+                        type: 'street',
+                        name: 'Гашека ул.',
+                        children: [
+                            {
+                                id: 3,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                            {
+                                id: 4,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: 2,
+                type: 'district',
+                name: 'Пресненский р-н',
+                children: [
+                    {
+                        id: 1,
+                        type: 'street',
+                        name: 'Гашека ул.',
+                        children: [
+                            {
+                                id: 1,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                            {
+                                id: 2,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                        ],
+                    },
+                    {
+                        id: 2,
+                        type: 'street',
+                        name: 'Гашека ул.',
+                        children: [
+                            {
+                                id: 3,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                            {
+                                id: 4,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+    {
+        id: 2,
+        type: 'city',
+        name: 'Москва',
+        children: [
+            {
+                id: 1,
+                type: 'district',
+                name: 'Пресненский р-н',
+                children: [
+                    {
+                        id: 1,
+                        type: 'street',
+                        name: 'Гашека ул.',
+                        children: [
+                            {
+                                id: 1,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                            {
+                                id: 2,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                        ],
+                    },
+                    {
+                        id: 2,
+                        type: 'street',
+                        name: 'Гашека ул.',
+                        children: [
+                            {
+                                id: 3,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                            {
+                                id: 4,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: 2,
+                type: 'district',
+                name: 'Пресненский р-н',
+                children: [
+                    {
+                        id: 1,
+                        type: 'street',
+                        name: 'Гашека ул.',
+                        children: [
+                            {
+                                id: 1,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                            {
+                                id: 2,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                        ],
+                    },
+                    {
+                        id: 2,
+                        type: 'street',
+                        name: 'Гашека ул.',
+                        children: [
+                            {
+                                id: 3,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                            {
+                                id: 4,
+                                type: 'user',
+                                name: 'Alesha',
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+];
+
 //создаём контекст
 export const useCreateAddressesContext = (): AddressesContextInitial => {
     const [selectedAdresses, setselectedAdresses] = useState<ChosenTerm[]>(dataPlaceholder);
+    const [addresses, setAddresses] = useState<AddressDto[]>(placeholderAdressesDto);
 
     const onSelectAddress = (value: string, checked: boolean) => {
         setselectedAdresses((prev) =>
@@ -53,5 +237,7 @@ export const useCreateAddressesContext = (): AddressesContextInitial => {
     return {
         selectedAddresses: selectedAdresses,
         onSelectAddress: onSelectAddress,
+        addresses: addresses,
+        setAddresses: (v: AddressDto[]) => setAddresses(v),
     };
 };
