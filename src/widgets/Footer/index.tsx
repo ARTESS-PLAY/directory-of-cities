@@ -1,5 +1,5 @@
-import Container from '../../shared/Container/ui';
 import { WithClassname } from '../../shared/types/types';
+import Container from '../../shared/ui/Container';
 import './index.css';
 
 const Footer = ({ className = '' }: WithClassname) => {

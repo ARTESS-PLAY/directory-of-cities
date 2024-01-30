@@ -1,0 +1,50 @@
+.checkbox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+}
+
+.checkbox input {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.checkbox input:checked ~ .checkbox__mark {
+    background-color: var(--color-dark-brown);
+}
+.checkbox input:checked ~ .checkbox__mark::before {
+    opacity: 1;
+}
+
+.checkbox__mark {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    background-color: transparent;
+    transition: 0.3s;
+    border: solid 1px var(--color-dark-brown);
+    position: relative;
+}
+
+.checkbox__mark::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../assets/check-mark.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.checkbox p {
+    margin-left: 0.5rem;
+    font-size: 1.2rem;
+}
