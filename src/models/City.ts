@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-interface City {
+export interface City {
     name: string;
     population: number;
 }

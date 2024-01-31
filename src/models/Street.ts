@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-interface Street {
+export interface Street {
     name: string;
     district: mongoose.Schema.Types.ObjectId;
 }

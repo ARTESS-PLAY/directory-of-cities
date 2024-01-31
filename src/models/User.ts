@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 interface User {
     name: string;
-    adress: mongoose.Schema.Types.ObjectId;
+    address: mongoose.Schema.Types.ObjectId;
 }
 
 const UserSchema = new mongoose.Schema<User>({
@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema<User>({
         required: true,
         type: String,
     },
-    adress: {
+    address: {
         type: mongoose.Schema.Types.ObjectId,
         requires: true,
         ref: 'Address',
