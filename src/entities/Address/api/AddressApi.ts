@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { UserAddressDto } from '../model/types';
 
-const url = 'https://directory-of-cities-server.onrender.com/addresses';
+// const url = 'https://directory-of-cities-server.onrender.com/addresses';
+const url = 'http://localhost:8080/addresses';
 
 interface createAddressProps {
     city: string;
