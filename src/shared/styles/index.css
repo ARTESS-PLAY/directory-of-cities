@@ -6,8 +6,19 @@
     font-family: 'Merriweather', serif;
 }
 body {
-    font-size: 16px;
+    font-size: 18px;
     font-family: 'Merriweather', serif;
+    background-image: url('../assets/bg.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+@media (max-width: 640px) {
+    body {
+        background-image: url('../assets/bg_mob.png');
+        font-size: 14px;
+    }
 }
 
 .modal-active {

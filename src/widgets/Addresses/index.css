@@ -19,3 +19,16 @@
     justify-content: space-between;
     margin-bottom: 1rem;
 }
+
+@media (max-width: 640px) {
+    .addresses__up {
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+.addresses {
+    margin-bottom: 2.5rem;
+}
