@@ -1,11 +1,14 @@
 import { createContext, useContext, useState } from 'react';
-import { AddressDto, ChosenTerm } from '../types';
+import { AddressDto, AviableTerm, ChosenTerm } from '../types';
+import { generateAviableForCheckboxes } from '../../lib/utils';
 
 interface AddressesContextInitial {
     selectedAddresses: ChosenTerm[];
     onSelectAddress: (value: string, checked: boolean) => void;
     addresses: AddressDto[];
     setAddresses: (v: AddressDto[]) => void;
+    aviableTerms: AviableTerm[];
+    setAviableTerms: (v: AviableTerm[]) => void;
 }
 
 //контекст для адресов
@@ -20,23 +23,22 @@ export const useAddressesContext = () => {
     return context;
 };
 
-const dataPlaceholder = [
+const dataPlaceholder: AviableTerm[] = [
     {
-        label: 'Города',
-        value: 'cities',
-        checked: true,
+        label: 'Город',
+        value: 'city',
     },
     {
-        label: 'Районы',
-        value: 'districts',
-        checked: true,
+        label: 'Район',
+        value: 'district',
     },
     {
-        label: 'Улицы',
-        value: 'streets',
-        checked: true,
+        label: 'Улицa',
+        value: 'street',
     },
 ];
+
+const dataPlaceholderAviable = generateAviableForCheckboxes(dataPlaceholder);
 
 const placeholderAdressesDto: AddressDto[] = [
     {
@@ -221,7 +223,8 @@ const placeholderAdressesDto: AddressDto[] = [
 
 //создаём контекст
 export const useCreateAddressesContext = (): AddressesContextInitial => {
-    const [selectedAdresses, setselectedAdresses] = useState<ChosenTerm[]>(dataPlaceholder);
+    const [selectedAdresses, setselectedAdresses] = useState<ChosenTerm[]>(dataPlaceholderAviable);
+    const [aviableTerms, setAviableTerms] = useState<AviableTerm[]>(dataPlaceholder);
     const [addresses, setAddresses] = useState<AddressDto[]>(placeholderAdressesDto);
 
     const onSelectAddress = (value: string, checked: boolean) => {
@@ -235,6 +238,8 @@ export const useCreateAddressesContext = (): AddressesContextInitial => {
     };
 
     return {
+        aviableTerms,
+        setAviableTerms: (v: AviableTerm[]) => setAviableTerms(v),
         selectedAddresses: selectedAdresses,
         onSelectAddress: onSelectAddress,
         addresses: addresses,

@@ -1,0 +1,20 @@
+.add-address-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.add-address-form__title {
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.add-address-form {
+    width: 500px;
+}
+
+.add-address-form__input {
+    width: 100%;
+}
