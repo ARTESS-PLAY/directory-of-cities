@@ -5,9 +5,17 @@ import { WithClassname } from '../../shared/types/types';
 import 'react-accessible-accordion/dist/fancy-example.css';
 import './index.css';
 import AddAddress from '../../features/AddAddress/ui';
+import { useEffect } from 'react';
 
 const Addresses = ({ className = '' }: WithClassname): JSX.Element => {
-    const { addresses } = useAddressesContext();
+    const { addresses, loadData } = useAddressesContext();
+
+    useEffect(() => {
+        const f = async () => {
+            loadData();
+        };
+        f();
+    }, []);
 
     return (
         <div className={`addresses ${className}`}>

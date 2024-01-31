@@ -10,6 +10,10 @@ body {
     font-family: 'Merriweather', serif;
 }
 
+.modal-active {
+    overflow: hidden;
+}
+
 /* css transition group */
 .fade-enter {
     opacity: 0;

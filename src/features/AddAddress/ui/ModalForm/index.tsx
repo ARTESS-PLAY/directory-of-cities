@@ -5,12 +5,20 @@ import './index.css';
 import Button from '../../../../shared/ui/Button';
 import { TermType } from '../../../../entities/Address/model/types';
 import { generateTermsForInputs } from '../../../../entities/Address/lib/utils';
+import { createAddress } from '../../../../entities/Address/api/AddressApi';
+import { WithDinamicKeys } from '../../../../shared/types/types';
 
-const ModalForm = () => {
-    const { aviableTerms } = useAddressesContext();
+interface ModalFormProps {
+    handleClose: () => void;
+}
+
+const ModalForm = ({ handleClose }: ModalFormProps) => {
+    const { availableTerms, loadAddresses } = useAddressesContext();
 
     //объект в котором хранятся необходимые значения и флаги на ошибки
-    const [values, setValues] = useState(generateTermsForInputs(aviableTerms));
+    const [values, setValues] = useState(generateTermsForInputs(availableTerms));
+    //локальный индикатор загрузки
+    const [isLoading, setIsLoading] = useState(false);
 
     const handeChangeValue = (typeTerm: TermType, value: string) => {
         const newValues = values.map((el) => {
@@ -25,14 +33,17 @@ const ModalForm = () => {
         setValues(newValues);
     };
 
-    const handleSend = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleSend = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         let validCheck = true;
+        const finalAddress: WithDinamicKeys = {};
+
         const newValues = values.map((el) => {
             if (el.inputValue.length < 1) {
                 validCheck = false;
                 el.error = true;
             }
+            finalAddress[el.value] = el.inputValue;
             return el;
         });
 
@@ -41,12 +52,19 @@ const ModalForm = () => {
             return;
         }
 
+        setIsLoading(true);
+        //@ts-ignore
+        await createAddress(finalAddress);
+        await loadAddresses();
+
         const clear = values.map((el) => {
             el.inputValue = '';
             return el;
         });
-
         setValues(clear);
+
+        setIsLoading(false);
+        handleClose();
     };
 
     return (
@@ -63,7 +81,7 @@ const ModalForm = () => {
                         error={el.error}
                     />
                 ))}
-                <Button onClick={handleSend}>Создать</Button>
+                <Button onClick={handleSend}>{isLoading ? 'Добавляю адрес...' : 'Добавить'}</Button>
             </form>
         </div>
     );

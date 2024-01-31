@@ -1,14 +1,19 @@
 import { createContext, useContext, useState } from 'react';
-import { AddressDto, AviableTerm, ChosenTerm } from '../types';
-import { generateAviableForCheckboxes } from '../../lib/utils';
+import { UserAddress, AvailableTerm, ChosenTerm } from '../types';
+import { generateAvailableForCheckboxes, generateTermsFromServer } from '../../lib/utils';
+import { getAddresses, getAvailable } from '../../api/AddressApi';
 
 interface AddressesContextInitial {
     selectedAddresses: ChosenTerm[];
     onSelectAddress: (value: string, checked: boolean) => void;
-    addresses: AddressDto[];
-    setAddresses: (v: AddressDto[]) => void;
-    aviableTerms: AviableTerm[];
-    setAviableTerms: (v: AviableTerm[]) => void;
+    addresses: UserAddress[];
+    setAddresses: (v: UserAddress[]) => void;
+    availableTerms: AvailableTerm[];
+    setAvailableTerms: (v: AvailableTerm[]) => void;
+    isLoaded: boolean;
+    setIsLoaded: (l: boolean) => void;
+    loadData: () => Promise<void>;
+    loadAddresses: () => Promise<void>;
 }
 
 //контекст для адресов
@@ -23,209 +28,14 @@ export const useAddressesContext = () => {
     return context;
 };
 
-const dataPlaceholder: AviableTerm[] = [
-    {
-        label: 'Город',
-        value: 'city',
-    },
-    {
-        label: 'Район',
-        value: 'district',
-    },
-    {
-        label: 'Улицa',
-        value: 'street',
-    },
-];
-
-const dataPlaceholderAviable = generateAviableForCheckboxes(dataPlaceholder);
-
-const placeholderAdressesDto: AddressDto[] = [
-    {
-        id: 1,
-        type: 'city',
-        name: 'Москва',
-        children: [
-            {
-                id: 1,
-                type: 'district',
-                name: 'Пресненский р-н',
-                children: [
-                    {
-                        id: 1,
-                        type: 'street',
-                        name: 'Гашека ул.',
-                        children: [
-                            {
-                                id: 1,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                            {
-                                id: 2,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                        ],
-                    },
-                    {
-                        id: 2,
-                        type: 'street',
-                        name: 'Гашека ул.',
-                        children: [
-                            {
-                                id: 3,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                            {
-                                id: 4,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                id: 2,
-                type: 'district',
-                name: 'Пресненский р-н',
-                children: [
-                    {
-                        id: 1,
-                        type: 'street',
-                        name: 'Гашека ул.',
-                        children: [
-                            {
-                                id: 1,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                            {
-                                id: 2,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                        ],
-                    },
-                    {
-                        id: 2,
-                        type: 'street',
-                        name: 'Гашека ул.',
-                        children: [
-                            {
-                                id: 3,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                            {
-                                id: 4,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
-    },
-    {
-        id: 2,
-        type: 'city',
-        name: 'Москва',
-        children: [
-            {
-                id: 1,
-                type: 'district',
-                name: 'Пресненский р-н',
-                children: [
-                    {
-                        id: 1,
-                        type: 'street',
-                        name: 'Гашека ул.',
-                        children: [
-                            {
-                                id: 1,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                            {
-                                id: 2,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                        ],
-                    },
-                    {
-                        id: 2,
-                        type: 'street',
-                        name: 'Гашека ул.',
-                        children: [
-                            {
-                                id: 3,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                            {
-                                id: 4,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                id: 2,
-                type: 'district',
-                name: 'Пресненский р-н',
-                children: [
-                    {
-                        id: 1,
-                        type: 'street',
-                        name: 'Гашека ул.',
-                        children: [
-                            {
-                                id: 1,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                            {
-                                id: 2,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                        ],
-                    },
-                    {
-                        id: 2,
-                        type: 'street',
-                        name: 'Гашека ул.',
-                        children: [
-                            {
-                                id: 3,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                            {
-                                id: 4,
-                                type: 'user',
-                                name: 'Alesha',
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
-    },
-];
+// const dataPlaceholderAvailable = generateAvailableForCheckboxes(dataPlaceholder);
 
 //создаём контекст
 export const useCreateAddressesContext = (): AddressesContextInitial => {
-    const [selectedAdresses, setselectedAdresses] = useState<ChosenTerm[]>(dataPlaceholderAviable);
-    const [aviableTerms, setAviableTerms] = useState<AviableTerm[]>(dataPlaceholder);
-    const [addresses, setAddresses] = useState<AddressDto[]>(placeholderAdressesDto);
+    const [selectedAdresses, setselectedAdresses] = useState<ChosenTerm[]>([]);
+    const [availableTerms, setAvailableTerms] = useState<AvailableTerm[]>([]);
+    const [addresses, setAddresses] = useState<UserAddress[]>([]);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     const onSelectAddress = (value: string, checked: boolean) => {
         setselectedAdresses((prev) =>
@@ -237,12 +47,33 @@ export const useCreateAddressesContext = (): AddressesContextInitial => {
         );
     };
 
+    const loadData = async () => {
+        setIsLoaded(false);
+        await Promise.all([loadAddresses(), loadAvailable()]);
+        setIsLoaded(true);
+    };
+    const loadAddresses = async () => {
+        const data = await getAddresses();
+        const formated = generateTermsFromServer(data);
+        setAddresses(formated);
+    };
+
+    const loadAvailable = async () => {
+        const available = await getAvailable();
+        setAvailableTerms(available);
+        setselectedAdresses(generateAvailableForCheckboxes(available));
+    };
+
     return {
-        aviableTerms,
-        setAviableTerms: (v: AviableTerm[]) => setAviableTerms(v),
+        loadData,
+        loadAddresses,
+        isLoaded,
+        setIsLoaded: (l: boolean) => setIsLoaded(l),
+        availableTerms,
+        setAvailableTerms: (v: AvailableTerm[]) => setAvailableTerms(v),
         selectedAddresses: selectedAdresses,
         onSelectAddress: onSelectAddress,
         addresses: addresses,
-        setAddresses: (v: AddressDto[]) => setAddresses(v),
+        setAddresses: (v: UserAddress[]) => setAddresses(v),
     };
 };

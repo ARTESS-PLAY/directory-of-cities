@@ -1,4 +1,4 @@
-import { AddressDto } from '../../../entities/Address/model/types';
+import { UserAddress } from '../../../entities/Address/model/types';
 import { WithClassname } from '../../../shared/types/types';
 import {
     AccordionItem,
@@ -8,12 +8,15 @@ import {
     Accordion,
 } from 'react-accessible-accordion';
 import './index.css';
+import { useAddressesContext } from '../../../entities/Address/model/context/AddressesContext';
 
 interface ChildAddressProps extends WithClassname {
-    address: AddressDto | undefined;
+    address: UserAddress | undefined;
 }
 
 const ChildAddress = ({ address, className = '' }: ChildAddressProps) => {
+    const { selectedAddresses } = useAddressesContext();
+
     if (address?.type === 'user') {
         return (
             <p
@@ -26,6 +29,17 @@ const ChildAddress = ({ address, className = '' }: ChildAddressProps) => {
 
     if (!address?.children) {
         return <></>;
+    }
+
+    const currentChecked = selectedAddresses.find((el) => el.value === address.type)?.checked;
+    if (!currentChecked) {
+        return (
+            <>
+                {address.children.map((el) => (
+                    <ChildAddress address={el} className={className} key={el.id} />
+                ))}
+            </>
+        );
     }
 
     return (

@@ -4,3 +4,7 @@ export interface WithChildren {
 export interface WithClassname {
     className?: string;
 }
+
+export interface WithDinamicKeys {
+    [key: string]: string;
+}
