@@ -20,7 +20,7 @@ export type TermForInput = AvailableTerm & {
 
 //объект который приходит с сервера
 export interface UserAddress {
-    id: number | string;
+    id: string;
     type: TermType;
     name: string;
     meta?: any;

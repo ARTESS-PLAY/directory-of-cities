@@ -12,6 +12,8 @@ interface createAddressProps {
 
 export const createAddress = async (obj: createAddressProps) => {
     const { data } = await axios.post(url, { ...obj, population: 10000 });
+
+    return data;
 };
 
 export const getAddresses = async () => {
@@ -22,6 +24,12 @@ export const getAddresses = async () => {
 
 export const getAvailable = async () => {
     const { data } = await axios.get(`${url}/available`);
+
+    return data;
+};
+
+export const removeAddress = async (id: string) => {
+    const { data } = await axios.delete(`${url}/${id}`);
 
     return data;
 };

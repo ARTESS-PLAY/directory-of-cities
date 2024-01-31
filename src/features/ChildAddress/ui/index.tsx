@@ -9,6 +9,7 @@ import {
 } from 'react-accessible-accordion';
 import './index.css';
 import { useAddressesContext } from '../../../entities/Address/model/context/AddressesContext';
+import DeleteAddress from '../../DeleteAddress/ui';
 
 interface ChildAddressProps extends WithClassname {
     address: UserAddress | undefined;
@@ -19,11 +20,12 @@ const ChildAddress = ({ address, className = '' }: ChildAddressProps) => {
 
     if (address?.type === 'user') {
         return (
-            <p
-                className="address__user"
-                data-tooltip={address?.meta?.tooltip ? address.meta.tooltip : ''}>
-                {address.name}
-            </p>
+            <div className="address__user">
+                <p data-tooltip={address?.meta?.tooltip ? address.meta.tooltip : ''}>
+                    {address.name}
+                </p>
+                <DeleteAddress id={address.id} />
+            </div>
         );
     }
 
