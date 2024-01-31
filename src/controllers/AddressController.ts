@@ -82,3 +82,21 @@ export const getAvailable = async (req: Request, res: Response) => {
         res.status(500).json(e);
     }
 };
+
+export const removeAddress = async (req: Request, res: Response) => {
+    try {
+        const userId = req.params.id;
+        const user = await UserModel.findOneAndDelete({
+            _id: userId,
+        });
+
+        const addressId = user.address;
+        const address = await AddressModel.findOneAndDelete({
+            _id: addressId,
+        });
+
+        res.json({ success: true });
+    } catch (e) {
+        res.status(500).json(e);
+    }
+};

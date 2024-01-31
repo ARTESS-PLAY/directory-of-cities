@@ -3,7 +3,12 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import { config } from './serverConfig';
 import { createAddressValidator } from './validators/adressValidator';
-import { createAddress, getAddresses, getAvailable } from './controllers/AddressController';
+import {
+    createAddress,
+    getAddresses,
+    getAvailable,
+    removeAddress,
+} from './controllers/AddressController';
 
 /* DATABASE CONNECT */
 
@@ -30,4 +35,6 @@ app.listen(config.port, () => {
 
 app.post('/addresses', createAddressValidator, createAddress);
 app.get('/addresses', getAddresses);
+app.delete('/addresses/:id', removeAddress);
+
 app.get('/addresses/available', getAvailable);
